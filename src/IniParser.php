@@ -3,14 +3,14 @@
 /**
  * [MIT Licensed](http://www.opensource.org/licenses/mit-license.php)
  * Copyright (c) 2013 Austin Hyde
- * 
+ *
  * Implements a parser for INI files that supports
  * * Section inheritance
  * * Property nesting
  * * Simple arrays
- * 
+ *
  * Compatible with PHP 5.2.0+
- * 
+ *
  * @author Austin Hyde
  * @author Till Klampaeckel <till@php.net>
  */
@@ -23,7 +23,7 @@ class IniParser {
     protected $file;
 
     /**
-     * @var boolean 
+     * @var boolean
      */
     public $use_array_object = true;
 
@@ -53,6 +53,12 @@ class IniParser {
         }
 
         $simple_parsed = parse_ini_file($this->file, true);
+        $overrideFile = sprintf('%s.overrides.ini', substr($this->file, 0, -4));
+
+        if (file_exists($overrideFile) && is_readable($overrideFile)) {
+            $simple_parsed = array_merge($simple_parsed, parse_ini_file($overrideFile, true));
+        }
+
         $inheritance_parsed = $this->parseSections($simple_parsed);
         return $this->parseKeys($inheritance_parsed);
     }
