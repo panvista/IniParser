@@ -121,6 +121,7 @@ class IniParser {
                 }
             }
             $sections[$root] = $arr;
+            unset($sections[$k]);
         }
 
 
