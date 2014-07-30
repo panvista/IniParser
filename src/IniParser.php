@@ -56,7 +56,7 @@ class IniParser {
         $overrideFile = sprintf('%s.overrides.ini', substr($this->file, 0, -4));
 
         if (file_exists($overrideFile) && is_readable($overrideFile)) {
-            $simple_parsed = array_merge($simple_parsed, parse_ini_file($overrideFile, true));
+            $simple_parsed = array_replace_recursive($simple_parsed, parse_ini_file($overrideFile, true));
         }
 
         $inheritance_parsed = $this->parseSections($simple_parsed);
